@@ -16,7 +16,6 @@
 package org.terasology.terapipes.components;
 
 import org.terasology.entitySystem.Component;
-import org.terasology.math.geom.Vector3i;
 
-public class PipeComponent implements Component {
+public class SuctionComponent implements Component {
 }

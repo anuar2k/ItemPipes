@@ -1,0 +1,10 @@
+{
+    "TeraPipes:Pipe" : {},
+     "SegmentedPaths:PathDescriptor" : {
+        "descriptors" : [
+            "TeraPipes:pipeLeftBackPath",
+            "TeraPipes:pipeLeftTopPath",
+            "TeraPipes:pipeBackTopPath"
+        ]
+     }
+}

@@ -17,9 +17,11 @@ package org.terasology.terapipes.blocks;
 
 import gnu.trove.map.TByteObjectMap;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.math.Rotation;
 import org.terasology.math.Side;
 import org.terasology.math.SideBitFlag;
 import org.terasology.math.geom.Vector3i;
+import org.terasology.segmentedpaths.blocks.PathFamily;
 import org.terasology.terapipes.components.PipeComponent;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
@@ -29,16 +31,17 @@ import org.terasology.world.block.family.UpdatesWithNeighboursFamily;
 
 import java.util.List;
 
-public class PipeBlockFamily extends UpdatesWithNeighboursFamily {
+public class PipeBlockFamily extends UpdatesWithNeighboursFamily  implements PathFamily{
 
     private byte connectionSides;
     private TByteObjectMap<Block> blocks;
+    private TByteObjectMap<Rotation> rotation;
 
-    public PipeBlockFamily(BlockUri blockUri, List<String> categories, Block archetypeBlock, TByteObjectMap<Block> blocks, byte connectionSides) {
+    public PipeBlockFamily(BlockUri blockUri, List<String> categories, Block archetypeBlock, TByteObjectMap<Block> blocks, byte connectionSides, TByteObjectMap<Rotation> rotation) {
         super(null, blockUri, categories, archetypeBlock, blocks, connectionSides);
         this.connectionSides = connectionSides;
         this.blocks = blocks;
-
+        this.rotation = rotation;
     }
 
     @Override
@@ -68,8 +71,19 @@ public class PipeBlockFamily extends UpdatesWithNeighboursFamily {
         Vector3i neighborLocation = new Vector3i(blockLocation);
         neighborLocation.add(connectSide.getVector3i());
 
-
         EntityRef neighborEntity = blockEntityRegistry.getBlockEntityAt(neighborLocation);
         return neighborEntity != null && neighborEntity.hasComponent(PipeComponent.class);
+    }
+
+    public Rotation getRotationFor(BlockUri blockUri) {
+        if (getURI().equals(blockUri.getFamilyUri())) {
+            try {
+                byte connections = Byte.parseByte(blockUri.getIdentifier().toString());
+                return rotation.get(connections);
+            } catch (IllegalArgumentException e) {
+                return null;
+            }
+        }
+        return null;
     }
 }

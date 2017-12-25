@@ -52,7 +52,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@RegisterBlockFamilyFactory("terapipe")
+@RegisterBlockFamilyFactory("pipe")
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class PipeBlockFamilyFactory extends BaseComponentSystem implements BlockFamilyFactory {
 
@@ -61,6 +61,8 @@ public class PipeBlockFamilyFactory extends BaseComponentSystem implements Block
 
     @In
     private BlockEntityRegistry blockEntityRegistry;
+
+    private TByteObjectMap<Rotation> rotations = new TByteObjectHashMap<>();
 
     private static final ImmutableSet<String> BLOCK_NAMES = ImmutableSet.of(
             UpdatesWithNeighboursFamilyFactory.NO_CONNECTIONS,
@@ -127,7 +129,7 @@ public class PipeBlockFamilyFactory extends BaseComponentSystem implements Block
         final Block archetypeBlock = blocksForConnections.get(SideBitFlag.getSides(Side.RIGHT, Side.LEFT));
 //        return new SignalUpdateFamily(blockUri, definition.getCategories(), archetypeBlock, blocksForConnections, (byte)63);
         return new PipeBlockFamily(blockUri, definition.getCategories(),
-                archetypeBlock, blocksForConnections, (byte)63);
+                archetypeBlock, blocksForConnections, (byte)63,rotations);
     }
 
     private void addConnections(TByteObjectMap<String>[] basicBlocks, int index, String connections) {
@@ -151,6 +153,7 @@ public class PipeBlockFamilyFactory extends BaseComponentSystem implements Block
             final String section = blockDefinitionIterator.value();
             Rotation rot = getRotationToAchieve(originalConnections, connections);
             if (rot != null) {
+                rotations.put(connections,rot);
                 return blockBuilder.constructTransformedBlock(definition, section, rot);
             }
         }

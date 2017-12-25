@@ -1,38 +1,65 @@
 {
-    "displayName": "Signal Cable",
-    "entity": {
-        "prefab": "signalling:SignalCable"
-    },
-
-    "rotation": "cable",
+    "displayName": "Pipe Cable",
+    "rotation": "pipe",
+    "translucent": true,
     "no_connections": {
-        "shape": "signalling:NoCon"
+        "shape": "TeraPipes:NoCon",
+        "entity": {
+            "prefab": "TeraPipes:defaultPipeTwoConnectionLine"
+        }
     },
     "one_connection": {
-        "shape": "signalling:OneCon"
+        "shape": "TeraPipes:OneCon",
+        "entity": {
+            "prefab": "TeraPipes:defaultPipeTwoConnectionLine"
+        }
     },
     "line_connection": {
-        "shape": "signalling:TwoConLine"
+        "shape": "TeraPipes:TwoConLine",
+        "entity": {
+            "prefab": "TeraPipes:defaultPipeTwoConnectionLine"
+        }
     },
     "2d_corner": {
-        "shape": "signalling:TwoConCorn"
+        "shape": "TeraPipes:TwoConCorn",
+        "entity": {
+            "prefab": "TeraPipes:defaultPipeTwoConnectionCorner"
+        }
     },
     "3d_corner": {
-        "shape": "signalling:ThreeConCorn"
+        "shape": "TeraPipes:ThreeConCorn",
+        "entity": {
+            "prefab": "TeraPipes:defaultPipeThreeConnectionCorner"
+        }
     },
     "2d_t": {
-        "shape": "signalling:ThreeConTee"
+        "shape": "TeraPipes:ThreeConTee",
+        "entity": {
+            "prefab": "TeraPipes:defaultPipeThreeConnectionTee"
+        }
     },
     "cross": {
-        "shape": "signalling:FourConCross"
+        "shape": "TeraPipes:FourConCross",
+        "entity": {
+            "prefab": "TeraPipes:defaultPipeFourConnectionCross"
+        }
     },
     "3d_side": {
-        "shape": "signalling:FourConTee"
+        "shape": "TeraPipes:FourConTee",
+        "entity": {
+            "prefab": "TeraPipes:defaultPipeFourConnectionTee"
+        }
     },
     "five_connections": {
-        "shape": "signalling:FiveCon"
+        "shape": "TeraPipes:FiveCon",
+        "entity": {
+            "prefab": "TeraPipes:defaultPipeFiveConnection"
+        }
     },
     "all": {
-        "shape": "signalling:SixCon"
+        "shape": "TeraPipes:SixCon",
+        "entity": {
+            "prefab": "TeraPipes:defaultPipeSixConnection"
+        }
     }
 }

@@ -1,0 +1,6 @@
+{
+    "displayName": "Suction Block",
+    "entity": {
+            "prefab": "TeraPipes:suction"
+    }
+}

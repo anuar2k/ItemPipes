@@ -18,5 +18,7 @@ package org.terasology.terapipes.components;
 import org.terasology.entitySystem.Component;
 import org.terasology.math.geom.Vector3i;
 
-public class PipeComponent implements Component {
+public class PipeFollowingComponent implements Component {
+    //hack to get around entities not being able to be saved
+    public Vector3i blockPosition;
 }
