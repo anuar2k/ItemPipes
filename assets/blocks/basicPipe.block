@@ -5,13 +5,13 @@
     "no_connections": {
         "shape": "TeraPipes:NoCon",
         "entity": {
-            "prefab": "TeraPipes:defaultPipeTwoConnectionLine"
+            "prefab": "TeraPipes:defaultPipeOneConnectionLine"
         }
     },
     "one_connection": {
         "shape": "TeraPipes:OneCon",
         "entity": {
-            "prefab": "TeraPipes:defaultPipeTwoConnectionLine"
+            "prefab": "TeraPipes:defaultPipeOneConnectionLine"
         }
     },
     "line_connection": {

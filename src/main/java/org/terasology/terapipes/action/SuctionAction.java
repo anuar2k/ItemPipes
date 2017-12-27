@@ -114,10 +114,10 @@ public class SuctionAction  extends BaseComponentSystem {
         SuctionComponent suctionComponent = owner.getComponent(SuctionComponent.class);
 
         LocationComponent locationComponent = event.getOtherEntity().getComponent(LocationComponent.class);
-        if (suctionComponent.lastTime + suctionComponent.delay < time.getGameTimeInMs()) {
-            suctionComponent.lastTime = time.getGameTimeInMs();
 
-            if (blockComponent.getPosition().toVector3f().distance(locationComponent.getWorldPosition()) <= 1f) {
+        if (blockComponent.getPosition().toVector3f().distance(locationComponent.getWorldPosition()) <= 1f) {
+            if (suctionComponent.lastTime + suctionComponent.delay < time.getGameTimeInMs()) {
+                suctionComponent.lastTime = time.getGameTimeInMs();
                 Map<Side, EntityRef> pipes = teraPipeSystem.findPipes(blockComponent.getPosition());
                 Optional<Side> side = pipes.keySet().stream().skip((int) (pipes.keySet().size() * Math.random())).findFirst();
                 if (side.isPresent()) {
