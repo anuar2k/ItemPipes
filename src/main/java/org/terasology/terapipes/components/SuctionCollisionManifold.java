@@ -16,9 +16,6 @@
 package org.terasology.terapipes.components;
 
 import org.terasology.entitySystem.Component;
-import org.terasology.math.geom.Vector3i;
 
-public class PipeFollowingComponent implements Component {
-    public float velocity = 0.0f;
-
+public class SuctionCollisionManifold implements Component {
 }

@@ -121,6 +121,7 @@ public class PipeBlockFamilyFactory extends BaseComponentSystem implements Block
                 if (block == null) {
                     throw new IllegalStateException("Unable to find correct block definition for connections: " + connections);
                 }
+                block.setKeepActive(true);
                 block.setUri(new BlockUri(blockUri, new Name(String.valueOf(connections))));
                 blocksForConnections.put(connections, block);
             }

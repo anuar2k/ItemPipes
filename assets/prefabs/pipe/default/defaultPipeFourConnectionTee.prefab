@@ -7,5 +7,6 @@
             "TeraPipes:pipeLeftTopPath",
             "TeraPipes:pipeFrontBackPath"
         ]
-     }
+     },
+    "TeraPipes:PipeRandomMapping": {}
 }

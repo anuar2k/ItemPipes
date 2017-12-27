@@ -1,6 +1,7 @@
 {
     "displayName": "Suction Block",
     "entity": {
-            "prefab": "TeraPipes:suction"
+            "prefab": "TeraPipes:suction",
+            "keepActive": true
     }
 }

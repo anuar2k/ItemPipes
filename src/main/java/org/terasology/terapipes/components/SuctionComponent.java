@@ -16,6 +16,12 @@
 package org.terasology.terapipes.components;
 
 import org.terasology.entitySystem.Component;
+import org.terasology.entitySystem.entity.EntityRef;
 
 public class SuctionComponent implements Component {
+    public  float range = 5f;
+    public  EntityRef collisionManifold;
+
+    public float delay = 1000f;
+    public long lastTime;
 }

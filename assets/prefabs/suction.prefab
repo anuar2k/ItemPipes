@@ -1,3 +1,6 @@
 {
-    "TeraPipes:Suction" : {}
+    "TeraPipes:Suction" : {},
+    "TeraPipes:PipeConnection": {
+        sides: ["TOP","LEFT","RIGHT","FRONT","BOTTOM","BACK"]
+    }
 }

@@ -15,6 +15,7 @@
  */
 package org.terasology.terapipes.blocks;
 
+import com.google.common.collect.Lists;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.math.Rotation;
@@ -31,9 +32,12 @@ import org.terasology.segmentedpaths.controllers.SegmentCacheSystem;
 import org.terasology.segmentedpaths.controllers.SegmentMapping;
 import org.terasology.segmentedpaths.controllers.SegmentSystem;
 import org.terasology.segmentedpaths.segments.Segment;
+import org.terasology.terapipes.event.PipeMappingEvent;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.family.BlockFamily;
+
+import java.util.List;
 
 public class PipeBlockSegmentMapper implements SegmentMapping {
     private PathFollowerSystem pathFollowerSystem;
@@ -77,15 +81,17 @@ public class PipeBlockSegmentMapper implements SegmentMapping {
                         Vector3f v2 = segmentSystem.segmentPosition(blockEntity);
                         Quat4f q2 = segmentSystem.segmentRotation(blockEntity);
 
+                        List<Prefab> paths = Lists.newArrayList();
                         for (Prefab d : pathDescriptor.descriptors) {
-
                             Segment nextSegment = segmentCacheSystem.getSegment(d);
                             if (segmentSystem.segmentMatch(currentSegment, v1, q1, nextSegment, v2, q2) != SegmentSystem.JointMatch.None) {
-                                return new MappingResult(d,blockEntity);
+                                paths.add(d);
                             }
                         }
+                        PipeMappingEvent pipeMappingEvent = blockEntity.send(new PipeMappingEvent(paths));
+                        return new MappingResult(pipeMappingEvent.getSelectedPath(), blockEntity);
+
                     }
-                    break;
                     case END: {
                         Vector3i segment = new Vector3i(blockComponent.getPosition()).add(rotation.rotate(blockMappingComponent.s2).getVector3i());
                         EntityRef blockEntity = blockEntityRegistry.getBlockEntityAt(segment);
@@ -96,15 +102,16 @@ public class PipeBlockSegmentMapper implements SegmentMapping {
                         Vector3f v2 = segmentSystem.segmentPosition(blockEntity);
                         Quat4f q2 = segmentSystem.segmentRotation(blockEntity);
 
+                        List<Prefab> paths = Lists.newArrayList();
                         for (Prefab d : pathDescriptor.descriptors) {
-
                             Segment nextSegment = segmentCacheSystem.getSegment(d);
                             if (segmentSystem.segmentMatch(currentSegment, v1, q1, nextSegment, v2, q2) != SegmentSystem.JointMatch.None) {
-                                return new MappingResult(d,blockEntity);
+                                paths.add(d);
                             }
                         }
+                        PipeMappingEvent pipeMappingEvent = blockEntity.send(new PipeMappingEvent(paths));
+                        return new MappingResult(pipeMappingEvent.getSelectedPath(), blockEntity);
                     }
-                    break;
                 }
             }
         }

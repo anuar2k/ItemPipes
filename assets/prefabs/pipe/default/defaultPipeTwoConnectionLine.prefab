@@ -4,5 +4,6 @@
         "descriptors" : [
             "TeraPipes:pipeFrontBackPath"
         ]
-     }
+     },
+           "TeraPipes:PipeRandomMapping": {}
 }

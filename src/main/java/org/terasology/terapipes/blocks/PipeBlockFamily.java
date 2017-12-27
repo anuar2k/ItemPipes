@@ -23,12 +23,14 @@ import org.terasology.math.SideBitFlag;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.segmentedpaths.blocks.PathFamily;
 import org.terasology.terapipes.components.PipeComponent;
+import org.terasology.terapipes.components.PipeConnectionComponent;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockUri;
 import org.terasology.world.block.family.UpdatesWithNeighboursFamily;
 
+import java.util.EnumSet;
 import java.util.List;
 
 public class PipeBlockFamily extends UpdatesWithNeighboursFamily  implements PathFamily{
@@ -72,8 +74,22 @@ public class PipeBlockFamily extends UpdatesWithNeighboursFamily  implements Pat
         neighborLocation.add(connectSide.getVector3i());
 
         EntityRef neighborEntity = blockEntityRegistry.getBlockEntityAt(neighborLocation);
-        return neighborEntity != null && neighborEntity.hasComponent(PipeComponent.class);
+        return neighborEntity != null && (neighborEntity.hasComponent(PipeComponent.class) || neighborEntity.hasComponent(PipeConnectionComponent.class));
     }
+
+    public EnumSet<Side> getSides(BlockUri blockUri)
+    {
+        if (getURI().equals(blockUri.getFamilyUri())) {
+            try {
+                byte connections = Byte.parseByte(blockUri.getIdentifier().toString());
+                return SideBitFlag.getSides(connections);
+            } catch (IllegalArgumentException e) {
+                return null;
+            }
+        }
+        return null;
+    }
+
 
     public Rotation getRotationFor(BlockUri blockUri) {
         if (getURI().equals(blockUri.getFamilyUri())) {

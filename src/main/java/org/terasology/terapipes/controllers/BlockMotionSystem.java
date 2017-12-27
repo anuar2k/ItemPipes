@@ -29,9 +29,9 @@ import org.terasology.segmentedpaths.controllers.PathFollowerSystem;
 import org.terasology.segmentedpaths.controllers.SegmentCacheSystem;
 import org.terasology.segmentedpaths.controllers.SegmentSystem;
 import org.terasology.terapipes.blocks.PipeBlockSegmentMapper;
+import org.terasology.terapipes.components.PipeComponent;
 import org.terasology.terapipes.components.PipeFollowingComponent;
 import org.terasology.world.BlockEntityRegistry;
-import org.terasology.world.block.BlockComponent;
 
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class BlockMotionSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
@@ -45,6 +45,8 @@ public class BlockMotionSystem extends BaseComponentSystem implements UpdateSubs
     SegmentSystem segmentSystem;
     @In
     SegmentCacheSystem segmentCacheSystem;
+    @In
+    TeraPipeSystem teraPipeSystem;
 
     private PipeBlockSegmentMapper segmentMapping;
 
@@ -55,28 +57,30 @@ public class BlockMotionSystem extends BaseComponentSystem implements UpdateSubs
     @Override
     public void update(float delta) {
         for(EntityRef entityRef: entityManager.getEntitiesWith(PipeFollowingComponent.class)) {
-            PipeFollowingComponent pipeFollowingComponent = entityRef.getComponent(PipeFollowingComponent.class);
-            PathFollowerComponent segmentVehicleComponent = entityRef.getComponent(PathFollowerComponent.class);
-
-            PathFollowerComponent vehicle = entityRef.getComponent(PathFollowerComponent.class);
-            vehicle.segmentMeta.association = blockEntityRegistry.getBlockEntityAt(pipeFollowingComponent.blockPosition);
-            entityRef.saveComponent(vehicle);
-
-            LocationComponent locationComponent =  entityRef.getComponent(LocationComponent.class);
-            Vector3f position = pathFollowerSystem.vehiclePoint(entityRef);
-            if (pathFollowerSystem.move(entityRef, delta * .1f, segmentMapping)) {
-
+            PathFollowerComponent pathFollowingComponent = entityRef.getComponent(PathFollowerComponent.class);
+            EntityRef pipe =  pathFollowingComponent.segmentMeta.association;
+            if(!pipe.exists()) {
+                teraPipeSystem.dropItem(entityRef);
+                return;
             }
+            PipeComponent pipeComponent = pipe.getComponent(PipeComponent.class);
+            PipeFollowingComponent pipeFollowingComponent = entityRef.getComponent(PipeFollowingComponent.class);
+            LocationComponent locationComponent =  entityRef.getComponent(LocationComponent.class);
 
-            pipeFollowingComponent.blockPosition = vehicle.segmentMeta.association.getComponent(BlockComponent.class).getPosition();
-            entityRef.saveComponent(pipeFollowingComponent);
+            pipeFollowingComponent.velocity -= pipeComponent.friction * delta;
+            if(pipeFollowingComponent.velocity < .5f)
+                pipeFollowingComponent.velocity = .5f;
 
-
-
-            locationComponent.setWorldPosition(position);
+            if (pathFollowerSystem.move(entityRef, delta * pipeFollowingComponent.velocity, segmentMapping)) {
+                Vector3f position = pathFollowerSystem.vehiclePoint(entityRef);
+                locationComponent.setWorldPosition(position);
+            } else {
+                teraPipeSystem.dropItem(entityRef);
+                return;
+            }
             entityRef.saveComponent(locationComponent);
-            entityRef.saveComponent(segmentVehicleComponent);
-
+            entityRef.saveComponent(pathFollowingComponent);
+            entityRef.saveComponent(pipeFollowingComponent);
         }
     }
 

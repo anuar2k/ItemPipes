@@ -16,9 +16,10 @@
 package org.terasology.terapipes.components;
 
 import org.terasology.entitySystem.Component;
-import org.terasology.math.geom.Vector3i;
+import org.terasology.math.Side;
 
-public class PipeFollowingComponent implements Component {
-    public float velocity = 0.0f;
+import java.util.List;
 
+public class PipeConnectionComponent implements Component {
+    List<Side> sides;
 }
