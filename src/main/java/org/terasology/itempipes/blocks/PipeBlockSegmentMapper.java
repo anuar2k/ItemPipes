@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.terapipes.blocks;
+package org.terasology.itempipes.blocks;
 
 import com.google.common.collect.Lists;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -32,7 +32,7 @@ import org.terasology.segmentedpaths.controllers.SegmentCacheSystem;
 import org.terasology.segmentedpaths.controllers.SegmentMapping;
 import org.terasology.segmentedpaths.controllers.SegmentSystem;
 import org.terasology.segmentedpaths.segments.Segment;
-import org.terasology.terapipes.event.PipeMappingEvent;
+import org.terasology.itempipes.event.PipeMappingEvent;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.family.BlockFamily;

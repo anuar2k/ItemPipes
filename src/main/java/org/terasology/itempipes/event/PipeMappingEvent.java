@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.terapipes.event;
+package org.terasology.itempipes.event;
 
 import org.terasology.entitySystem.event.AbstractConsumableEvent;
 import org.terasology.entitySystem.prefab.Prefab;
 
 import java.util.List;
-import java.util.Set;
 
 public class PipeMappingEvent extends AbstractConsumableEvent {
 

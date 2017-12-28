@@ -1,18 +1,18 @@
 {
-    "TeraPipes:Pipe" : {},
+    "ItemPipes:Pipe" : {},
      "SegmentedPaths:PathDescriptor" : {
         "descriptors" : [
-            "TeraPipes:pipeLeftBackPath",
-            "TeraPipes:pipeLeftFrontPath",
-            "TeraPipes:pipeLeftTopPath",
-            "TeraPipes:pipeLeftBottomPath",
-            "TeraPipes:pipeBackTopPath",
-            "TeraPipes:pipeBackBottomPath",
-            "TeraPipes:pipeFrontTopPath",
-            "TeraPipes:pipeTopBottomPath",
-            "TeraPipes:pipeFrontBackPath",
-            "TeraPipes:pipeFrontBottomPath"
+            "ItemPipes:pipeLeftBackPath",
+            "ItemPipes:pipeLeftFrontPath",
+            "ItemPipes:pipeLeftTopPath",
+            "ItemPipes:pipeLeftBottomPath",
+            "ItemPipes:pipeBackTopPath",
+            "ItemPipes:pipeBackBottomPath",
+            "ItemPipes:pipeFrontTopPath",
+            "ItemPipes:pipeTopBottomPath",
+            "ItemPipes:pipeFrontBackPath",
+            "ItemPipes:pipeFrontBottomPath"
         ]
      },
-     "TeraPipes:PipeRandomMapping": {}
+     "ItemPipes:PipeRandomMapping": {}
 }

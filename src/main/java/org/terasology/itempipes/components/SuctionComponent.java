@@ -13,9 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.terapipes.components;
+package org.terasology.itempipes.components;
 
 import org.terasology.entitySystem.Component;
+import org.terasology.entitySystem.entity.EntityRef;
 
-public class SuctionCollisionManifold implements Component {
+public class SuctionComponent implements Component {
+    public  float range = 5f;
+    public  EntityRef collisionManifold;
+
+    public float delay = 1000f;
+    public long lastTime;
 }

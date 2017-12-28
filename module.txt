@@ -1,8 +1,8 @@
 {
-    "id" : "TeraPipes",
+    "id" : "ItemPipes",
     "version" : "0.1.0-SNAPSHOT",
     "author" : "",
-    "displayName" : "TeraPipes",
+    "displayName" : "Item Pipes",
     "description" : "",
     "dependencies" : [],
     "serverSideOnly" : false,
@@ -13,7 +13,7 @@
             },
             {
                 "id" : "SegmentedPaths",
-                "minVersion": "0.1.0"
+                "minVersion": "0.2.0"
 
             }
     ]

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.terapipes.controllers;
+package org.terasology.itempipes.controllers;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -31,27 +31,22 @@ import org.terasology.math.Side;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.math.geom.Vector3i;
-import org.terasology.physics.StandardCollisionGroup;
 import org.terasology.physics.components.RigidBodyComponent;
-import org.terasology.physics.engine.RigidBody;
 import org.terasology.registry.In;
 import org.terasology.registry.Share;
 import org.terasology.segmentedpaths.SegmentMeta;
 import org.terasology.segmentedpaths.components.BlockMappingComponent;
 import org.terasology.segmentedpaths.components.PathDescriptorComponent;
 import org.terasology.segmentedpaths.components.PathFollowerComponent;
-import org.terasology.segmentedpaths.controllers.PathFollowerSystem;
 import org.terasology.segmentedpaths.controllers.SegmentCacheSystem;
-import org.terasology.segmentedpaths.controllers.SegmentMapping;
 import org.terasology.segmentedpaths.controllers.SegmentSystem;
 import org.terasology.segmentedpaths.segments.Segment;
-import org.terasology.terapipes.blocks.PipeBlockFamily;
-import org.terasology.terapipes.components.PipeComponent;
-import org.terasology.terapipes.components.PipeFollowingComponent;
+import org.terasology.itempipes.blocks.PipeBlockFamily;
+import org.terasology.itempipes.components.PipeComponent;
+import org.terasology.itempipes.components.PipeFollowingComponent;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.family.BlockFamily;
 
 import java.util.EnumSet;

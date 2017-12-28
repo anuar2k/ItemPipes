@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.terapipes.controllers;
+package org.terasology.itempipes.controllers;
 
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -21,17 +21,25 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.itempipes.components.PipeConnectionComponent;
+import org.terasology.itempipes.event.PipeInsertEvent;
 import org.terasology.logic.location.LocationComponent;
+import org.terasology.math.Direction;
+import org.terasology.math.Side;
+import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
+import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.In;
+import org.terasology.segmentedpaths.components.BlockMappingComponent;
 import org.terasology.segmentedpaths.components.PathFollowerComponent;
 import org.terasology.segmentedpaths.controllers.PathFollowerSystem;
 import org.terasology.segmentedpaths.controllers.SegmentCacheSystem;
 import org.terasology.segmentedpaths.controllers.SegmentSystem;
-import org.terasology.terapipes.blocks.PipeBlockSegmentMapper;
-import org.terasology.terapipes.components.PipeComponent;
-import org.terasology.terapipes.components.PipeFollowingComponent;
+import org.terasology.itempipes.blocks.PipeBlockSegmentMapper;
+import org.terasology.itempipes.components.PipeComponent;
+import org.terasology.itempipes.components.PipeFollowingComponent;
 import org.terasology.world.BlockEntityRegistry;
+import org.terasology.world.block.BlockComponent;
 
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class BlockMotionSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
@@ -75,7 +83,21 @@ public class BlockMotionSystem extends BaseComponentSystem implements UpdateSubs
                 Vector3f position = pathFollowerSystem.vehiclePoint(entityRef);
                 locationComponent.setWorldPosition(position);
             } else {
+                Quat4f rotation = segmentSystem.segmentRotation(pathFollowingComponent.segmentMeta);
+                BlockMappingComponent blockMappingComponent = pathFollowingComponent.segmentMeta.prefab.getComponent(BlockMappingComponent.class);
+                BlockComponent blockComponent = pipe.getComponent(BlockComponent.class);
+                Vector3i blockPosition = new Vector3i(blockComponent.getPosition());
+                if(pathFollowingComponent.segmentMeta.sign == 1) {
+                    blockPosition.add(Side.inDirection(rotation.rotate(blockMappingComponent.s2.getVector3i().toVector3f())).getVector3i());
+                } else {
+                    blockPosition.add(Side.inDirection(rotation.rotate(blockMappingComponent.s1.getVector3i().toVector3f())).getVector3i());
+                }
+                EntityRef blockEntity = blockEntityRegistry.getBlockEntityAt(blockPosition);
                 teraPipeSystem.dropItem(entityRef);
+                if(blockEntity.hasComponent(PipeConnectionComponent.class)) {
+                    blockEntity.send(new PipeInsertEvent(entityRef,pathFollowingComponent.segmentMeta));
+                }
+
                 return;
             }
             entityRef.saveComponent(locationComponent);

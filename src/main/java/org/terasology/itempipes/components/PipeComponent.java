@@ -13,13 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.terapipes.components;
+package org.terasology.itempipes.components;
 
 import org.terasology.entitySystem.Component;
-import org.terasology.math.Side;
 
-import java.util.List;
-
-public class PipeConnectionComponent implements Component {
-    List<Side> sides;
+public class PipeComponent implements Component {
+    public float friction = .1f;
 }

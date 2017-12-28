@@ -1,9 +1,9 @@
 {
-    "TeraPipes:Pipe" : {},
+    "ItemPipes:Pipe" : {},
      "SegmentedPaths:PathDescriptor" : {
         "descriptors" : [
-            "TeraPipes:pipeLeftBackPath"
+            "ItemPipes:pipeLeftBackPath"
         ]
      },
-           "TeraPipes:PipeRandomMapping": {}
+     "ItemPipes:PipeRandomMapping": {}
 }
