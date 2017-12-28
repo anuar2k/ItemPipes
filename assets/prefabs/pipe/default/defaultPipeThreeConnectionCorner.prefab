@@ -1,11 +1,11 @@
 {
-    "TeraPipes:Pipe" : {},
+    "ItemPipes:Pipe" : {},
      "SegmentedPaths:PathDescriptor" : {
         "descriptors" : [
-            "TeraPipes:pipeLeftBackPath",
-            "TeraPipes:pipeLeftTopPath",
-            "TeraPipes:pipeBackTopPath"
+            "ItemPipes:pipeLeftBackPath",
+            "ItemPipes:pipeLeftTopPath",
+            "ItemPipes:pipeBackTopPath"
         ]
      },
-           "TeraPipes:PipeRandomMapping": {}
+     "ItemPipes:PipeRandomMapping": {}
 }

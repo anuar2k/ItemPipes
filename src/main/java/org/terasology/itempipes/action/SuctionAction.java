@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.terapipes.action;
+package org.terasology.itempipes.action;
 
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
@@ -27,32 +27,23 @@ import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.logic.inventory.PickupComponent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.Side;
-import org.terasology.math.SideBitFlag;
 import org.terasology.physics.CollisionGroup;
 import org.terasology.physics.StandardCollisionGroup;
-import org.terasology.physics.components.RigidBodyComponent;
 import org.terasology.physics.components.TriggerComponent;
 import org.terasology.physics.events.CollideEvent;
 import org.terasology.physics.events.ImpulseEvent;
 import org.terasology.physics.shapes.SphereShapeComponent;
 import org.terasology.registry.In;
-import org.terasology.segmentedpaths.components.PathFollowerComponent;
-import org.terasology.terapipes.components.SuctionCollisionManifold;
-import org.terasology.terapipes.components.SuctionComponent;
-import org.terasology.terapipes.controllers.TeraPipeSystem;
+import org.terasology.itempipes.components.SuctionCollisionManifold;
+import org.terasology.itempipes.components.SuctionComponent;
+import org.terasology.itempipes.controllers.TeraPipeSystem;
 import org.terasology.world.block.BlockComponent;
-import org.terasology.world.block.entity.placement.PlaceBlocks;
 import org.terasology.world.block.items.OnBlockItemPlaced;
 
-import javax.print.attribute.standard.Sides;
-import java.awt.*;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 import java.util.Set;
 
 @RegisterSystem(RegisterMode.AUTHORITY)

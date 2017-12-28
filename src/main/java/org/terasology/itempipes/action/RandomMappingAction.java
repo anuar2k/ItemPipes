@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.terapipes.action;
+package org.terasology.itempipes.action;
 
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -21,9 +21,8 @@ import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.terapipes.components.PipeRandomMappingComponent;
-import org.terasology.terapipes.event.PipeMappingEvent;
-import org.terasology.world.block.items.OnBlockItemPlaced;
+import org.terasology.itempipes.components.PipeRandomMappingComponent;
+import org.terasology.itempipes.event.PipeMappingEvent;
 
 import java.util.Optional;
 

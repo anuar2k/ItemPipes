@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.terapipes.components;
+package org.terasology.itempipes.components;
 
 import org.terasology.entitySystem.Component;
-import org.terasology.math.geom.Vector3i;
 
-public class PipeComponent implements Component {
-    public float friction = .1f;
+public class PipeRandomMappingComponent implements Component {
 }

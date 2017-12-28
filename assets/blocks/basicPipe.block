@@ -3,63 +3,63 @@
     "rotation": "pipe",
     "translucent": true,
     "no_connections": {
-        "shape": "TeraPipes:NoCon",
+        "shape": "ItemPipes:NoCon",
         "entity": {
-            "prefab": "TeraPipes:defaultPipeOneConnectionLine"
+            "prefab": "ItemPipes:defaultPipeOneConnectionLine"
         }
     },
     "one_connection": {
-        "shape": "TeraPipes:OneCon",
+        "shape": "ItemPipes:OneCon",
         "entity": {
-            "prefab": "TeraPipes:defaultPipeOneConnectionLine"
+            "prefab": "ItemPipes:defaultPipeOneConnectionLine"
         }
     },
     "line_connection": {
-        "shape": "TeraPipes:TwoConLine",
+        "shape": "ItemPipes:TwoConLine",
         "entity": {
-            "prefab": "TeraPipes:defaultPipeTwoConnectionLine"
+            "prefab": "ItemPipes:defaultPipeTwoConnectionLine"
         }
     },
     "2d_corner": {
-        "shape": "TeraPipes:TwoConCorn",
+        "shape": "ItemPipes:TwoConCorn",
         "entity": {
-            "prefab": "TeraPipes:defaultPipeTwoConnectionCorner"
+            "prefab": "ItemPipes:defaultPipeTwoConnectionCorner"
         }
     },
     "3d_corner": {
-        "shape": "TeraPipes:ThreeConCorn",
+        "shape": "ItemPipes:ThreeConCorn",
         "entity": {
-            "prefab": "TeraPipes:defaultPipeThreeConnectionCorner"
+            "prefab": "ItemPipes:defaultPipeThreeConnectionCorner"
         }
     },
     "2d_t": {
-        "shape": "TeraPipes:ThreeConTee",
+        "shape": "ItemPipes:ThreeConTee",
         "entity": {
-            "prefab": "TeraPipes:defaultPipeThreeConnectionTee"
+            "prefab": "ItemPipes:defaultPipeThreeConnectionTee"
         }
     },
     "cross": {
-        "shape": "TeraPipes:FourConCross",
+        "shape": "ItemPipes:FourConCross",
         "entity": {
-            "prefab": "TeraPipes:defaultPipeFourConnectionCross"
+            "prefab": "ItemPipes:defaultPipeFourConnectionCross"
         }
     },
     "3d_side": {
-        "shape": "TeraPipes:FourConTee",
+        "shape": "ItemPipes:FourConTee",
         "entity": {
-            "prefab": "TeraPipes:defaultPipeFourConnectionTee"
+            "prefab": "ItemPipes:defaultPipeFourConnectionTee"
         }
     },
     "five_connections": {
-        "shape": "TeraPipes:FiveCon",
+        "shape": "ItemPipes:FiveCon",
         "entity": {
-            "prefab": "TeraPipes:defaultPipeFiveConnection"
+            "prefab": "ItemPipes:defaultPipeFiveConnection"
         }
     },
     "all": {
-        "shape": "TeraPipes:SixCon",
+        "shape": "ItemPipes:SixCon",
         "entity": {
-            "prefab": "TeraPipes:defaultPipeSixConnection"
+            "prefab": "ItemPipes:defaultPipeSixConnection"
         }
     }
 }

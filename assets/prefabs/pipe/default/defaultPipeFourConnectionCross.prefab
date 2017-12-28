@@ -1,14 +1,14 @@
 {
-    "TeraPipes:Pipe" : {},
+    "ItemPipes:Pipe" : {},
      "SegmentedPaths:PathDescriptor" : {
         "descriptors" : [
-            "TeraPipes:pipeRightBackPath",
-            "TeraPipes:pipeRightFrontPath",
-            "TeraPipes:pipeLeftFrontPath",
-            "TeraPipes:pipeLeftBackPath",
-            "TeraPipes:pipeLeftRightPath",
-            "TeraPipes:pipeFrontBackPath"
+            "ItemPipes:pipeRightBackPath",
+            "ItemPipes:pipeRightFrontPath",
+            "ItemPipes:pipeLeftFrontPath",
+            "ItemPipes:pipeLeftBackPath",
+            "ItemPipes:pipeLeftRightPath",
+            "ItemPipes:pipeFrontBackPath"
         ]
      },
-   "TeraPipes:PipeRandomMapping": {}
+   "ItemPipes:PipeRandomMapping": {}
 }

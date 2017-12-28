@@ -1,7 +1,7 @@
 {
-    "TeraPipes:Pipe" : {},
+    "ItemPipes:Pipe" : {},
      "SegmentedPaths:PathDescriptor" : {
-        "descriptors" : ["TeraPipes:pipeEndPath"]
+        "descriptors" : ["ItemPipes:pipeEndPath"]
      },
-    "TeraPipes:PipeRandomMapping": {}
+    "ItemPipes:PipeRandomMapping": {}
 }

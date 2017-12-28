@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.terapipes.blocks;
+package org.terasology.itempipes.blocks;
 
 import gnu.trove.map.TByteObjectMap;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -22,8 +22,8 @@ import org.terasology.math.Side;
 import org.terasology.math.SideBitFlag;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.segmentedpaths.blocks.PathFamily;
-import org.terasology.terapipes.components.PipeComponent;
-import org.terasology.terapipes.components.PipeConnectionComponent;
+import org.terasology.itempipes.components.PipeComponent;
+import org.terasology.itempipes.components.PipeConnectionComponent;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
