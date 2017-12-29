@@ -5,61 +5,61 @@
     "no_connections": {
         "shape": "ItemPipes:NoCon",
         "entity": {
-            "prefab": "ItemPipes:defaultPipeOneConnectionLine"
+            "prefab": "ItemPipes:basicPipeOneConnection"
         }
     },
     "one_connection": {
         "shape": "ItemPipes:OneCon",
         "entity": {
-            "prefab": "ItemPipes:defaultPipeOneConnectionLine"
+            "prefab": "ItemPipes:basicPipeOneConnectionLine"
         }
     },
     "line_connection": {
         "shape": "ItemPipes:TwoConLine",
         "entity": {
-            "prefab": "ItemPipes:defaultPipeTwoConnectionLine"
+            "prefab": "ItemPipes:basicPipeTwoConnectionLine"
         }
     },
     "2d_corner": {
         "shape": "ItemPipes:TwoConCorn",
         "entity": {
-            "prefab": "ItemPipes:defaultPipeTwoConnectionCorner"
+            "prefab": "ItemPipes:basicPipeTwoConnectionCorner"
         }
     },
     "3d_corner": {
         "shape": "ItemPipes:ThreeConCorn",
         "entity": {
-            "prefab": "ItemPipes:defaultPipeThreeConnectionCorner"
+            "prefab": "ItemPipes:basicPipeThreeConnectionCorner"
         }
     },
     "2d_t": {
         "shape": "ItemPipes:ThreeConTee",
         "entity": {
-            "prefab": "ItemPipes:defaultPipeThreeConnectionTee"
+            "prefab": "ItemPipes:basicPipeThreeConnectionTee"
         }
     },
     "cross": {
         "shape": "ItemPipes:FourConCross",
         "entity": {
-            "prefab": "ItemPipes:defaultPipeFourConnectionCross"
+            "prefab": "ItemPipes:basicPipeFourConnectionCross"
         }
     },
     "3d_side": {
         "shape": "ItemPipes:FourConTee",
         "entity": {
-            "prefab": "ItemPipes:defaultPipeFourConnectionTee"
+            "prefab": "ItemPipes:basicPipeFourConnectionTee"
         }
     },
     "five_connections": {
         "shape": "ItemPipes:FiveCon",
         "entity": {
-            "prefab": "ItemPipes:defaultPipeFiveConnection"
+            "prefab": "ItemPipes:basicPipeFiveConnection"
         }
     },
     "all": {
         "shape": "ItemPipes:SixCon",
         "entity": {
-            "prefab": "ItemPipes:defaultPipeSixConnection"
+            "prefab": "ItemPipes:basicPipeSixConnection"
         }
     }
 }

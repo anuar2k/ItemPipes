@@ -76,8 +76,8 @@ public class BlockMotionSystem extends BaseComponentSystem implements UpdateSubs
             LocationComponent locationComponent =  entityRef.getComponent(LocationComponent.class);
 
             pipeFollowingComponent.velocity -= pipeComponent.friction * delta;
-            if(pipeFollowingComponent.velocity < .5f)
-                pipeFollowingComponent.velocity = .5f;
+            if(Math.abs(pipeFollowingComponent.velocity) < .5f)
+                pipeFollowingComponent.velocity = .5f * Math.signum(pipeFollowingComponent.velocity);
 
             if (pathFollowerSystem.move(entityRef, delta * pipeFollowingComponent.velocity, segmentMapping)) {
                 Vector3f position = pathFollowerSystem.vehiclePoint(entityRef);

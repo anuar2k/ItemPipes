@@ -45,7 +45,7 @@ public class PipeBlockSegmentMapper implements SegmentMapping {
     private SegmentCacheSystem segmentCacheSystem;
     private BlockEntityRegistry blockEntityRegistry;
 
-    public PipeBlockSegmentMapper(BlockEntityRegistry blockEntityRegistry, PathFollowerSystem pathFollowerSystem,SegmentSystem segmentSystem, SegmentCacheSystem segmentCacheSystem) {
+    public PipeBlockSegmentMapper(BlockEntityRegistry blockEntityRegistry, PathFollowerSystem pathFollowerSystem, SegmentSystem segmentSystem, SegmentCacheSystem segmentCacheSystem) {
         this.blockEntityRegistry = blockEntityRegistry;
         this.pathFollowerSystem = pathFollowerSystem;
         this.segmentCacheSystem = segmentCacheSystem;

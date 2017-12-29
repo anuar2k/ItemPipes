@@ -23,10 +23,13 @@ import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.itempipes.blocks.PipeBlockFamily;
+import org.terasology.itempipes.components.PipeFollowingComponent;
 import org.terasology.logic.common.lifespan.LifespanComponent;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.PickupComponent;
 import org.terasology.logic.location.LocationComponent;
+import org.terasology.math.Rotation;
 import org.terasology.math.Side;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
@@ -35,18 +38,17 @@ import org.terasology.physics.components.RigidBodyComponent;
 import org.terasology.registry.In;
 import org.terasology.registry.Share;
 import org.terasology.segmentedpaths.SegmentMeta;
+import org.terasology.segmentedpaths.blocks.PathFamily;
 import org.terasology.segmentedpaths.components.BlockMappingComponent;
 import org.terasology.segmentedpaths.components.PathDescriptorComponent;
 import org.terasology.segmentedpaths.components.PathFollowerComponent;
 import org.terasology.segmentedpaths.controllers.SegmentCacheSystem;
 import org.terasology.segmentedpaths.controllers.SegmentSystem;
 import org.terasology.segmentedpaths.segments.Segment;
-import org.terasology.itempipes.blocks.PipeBlockFamily;
-import org.terasology.itempipes.components.PipeComponent;
-import org.terasology.itempipes.components.PipeFollowingComponent;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
+import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.family.BlockFamily;
 
 import java.util.EnumSet;
@@ -105,12 +107,12 @@ public class TeraPipeSystem extends BaseComponentSystem {
         return results;
     }
 
-    public Set<Prefab> filterPrefabBySide(Quat4f rot, Set<Prefab> prefabs, Side side) {
+    public Set<Prefab> filterPrefabBySide(Rotation rotation, Set<Prefab> prefabs, Side side) {
         Set<Prefab> result = Sets.newHashSet();
         for (Prefab prefab : prefabs) {
             BlockMappingComponent blockMappingComponent = prefab.getComponent(BlockMappingComponent.class);
-            Side s1 = Side.inDirection(rot.rotate(blockMappingComponent.s1.getVector3i().toVector3f()));
-            Side s2 = Side.inDirection(rot.rotate(blockMappingComponent.s2.getVector3i().toVector3f()));
+            Side s1 = rotation.rotate(blockMappingComponent.s1);
+            Side s2 = rotation.rotate(blockMappingComponent.s2);
             if (s1.equals(side) || s2.equals(side)) {
                 result.add(prefab);
             }
@@ -145,9 +147,6 @@ public class TeraPipeSystem extends BaseComponentSystem {
         ItemComponent itemComponent = actor.getComponent(ItemComponent.class);
 
         Prefab prefab = itemComponent.pickupPrefab;
-        if(itemComponent == null || itemComponent.pickupPrefab == null)
-            prefab = actor.getParentPrefab();
-
         PickupComponent pickupComponent = prefab.getComponent(PickupComponent.class);
         pickupComponent.timeDropped = time.getGameTimeInMs();
         RigidBodyComponent rigidBodyComponent = prefab.getComponent(RigidBodyComponent.class);
@@ -163,41 +162,49 @@ public class TeraPipeSystem extends BaseComponentSystem {
     }
 
 
-    public void insertIntoPipe(EntityRef actor, EntityRef pipe, Side side,Prefab prefab, float velocity) {
+    public boolean insertIntoPipe(EntityRef actor, EntityRef pipe, Side side, Prefab prefab, float velocity) {
         if (actor.hasComponent(PipeFollowingComponent.class))
-            return;
-        if (!pipe.hasComponent(PipeComponent.class))
-            return;
+            return false;
+        if(actor.hasComponent(ItemComponent.class))
+            return false;
 
-        BlockMappingComponent blockMappingComponent = prefab.getComponent(BlockMappingComponent.class);
-        PathFollowerComponent pathFollowerComponent = new PathFollowerComponent();
-        Quat4f rotation = segmentSystem.segmentRotation(pipe);
-        if (Side.inDirection(rotation.rotate(blockMappingComponent.s1.getVector3i().toVector3f())).equals(side)) {
-            pathFollowerComponent.segmentMeta = new SegmentMeta(0, pipe, prefab);
-            pathFollowerComponent.segmentMeta.sign = 1;
+        BlockComponent blockComponent = pipe.getComponent(BlockComponent.class);
+        if (blockComponent == null)
+            return false;
+        Block block = blockComponent.getBlock();
+        BlockFamily family = block.getBlockFamily();
+        if (family instanceof PathFamily) {
+            BlockMappingComponent blockMappingComponent = prefab.getComponent(BlockMappingComponent.class);
+            if (blockMappingComponent == null)
+                return false;
+            Rotation rotation = ((PathFamily) family).getRotationFor(block.getURI());
+            PathFollowerComponent pathFollowerComponent = new PathFollowerComponent();
+            if (rotation.rotate(blockMappingComponent.s1).equals(side)) {
+                pathFollowerComponent.segmentMeta = new SegmentMeta(0, pipe, prefab);
+                pathFollowerComponent.segmentMeta.sign = 1;
+            } else if (rotation.rotate(blockMappingComponent.s2).equals(side)) {
+                Segment segment = segmentCacheSystem.getSegment(prefab);
+                pathFollowerComponent.segmentMeta = new SegmentMeta(segment.maxDistance(), pipe, prefab);
+                pathFollowerComponent.segmentMeta.sign = -1;
+            } else {
+                return false;
+            }
+            PipeFollowingComponent pipeFollowingComponent = new PipeFollowingComponent();
+            pipeFollowingComponent.velocity = Math.abs(velocity);
 
-        } else if (Side.inDirection(rotation.rotate(blockMappingComponent.s2.getVector3i().toVector3f())).equals(side)) {
-            Segment segment = segmentCacheSystem.getSegment(prefab);
-            pathFollowerComponent.segmentMeta = new SegmentMeta(segment.maxDistance(), pipe, prefab);
-            pathFollowerComponent.segmentMeta.sign = -1;
-        } else {
-            return;
+            LocationComponent locationComponent = actor.getComponent(LocationComponent.class);
+            locationComponent.setWorldRotation(new Quat4f(Vector3f.up(), 0));
+
+            actor.saveComponent(locationComponent);
+            actor.addOrSaveComponent(pathFollowerComponent);
+            actor.addComponent(pipeFollowingComponent);
+
+            actor.removeComponent(PickupComponent.class);
+            actor.removeComponent(RigidBodyComponent.class);
+            actor.removeComponent(LifespanComponent.class);
+            return true;
         }
-
-
-        PipeFollowingComponent pipeFollowingComponent = new PipeFollowingComponent();
-        pipeFollowingComponent.velocity = Math.abs(velocity);
-
-        LocationComponent locationComponent = actor.getComponent(LocationComponent.class);
-        locationComponent.setWorldRotation(new Quat4f(Vector3f.up(), 0));
-
-        actor.saveComponent(locationComponent);
-        actor.addOrSaveComponent(pathFollowerComponent);
-        actor.addComponent(pipeFollowingComponent);
-
-        actor.removeComponent(PickupComponent.class);
-        actor.removeComponent(RigidBodyComponent.class);
-        actor.removeComponent(LifespanComponent.class);
+        return false;
     }
 
 }
