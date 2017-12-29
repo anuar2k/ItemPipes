@@ -56,10 +56,8 @@ import java.util.Map;
 import java.util.Set;
 
 @RegisterSystem(RegisterMode.AUTHORITY)
-@Share(value = TeraPipeSystem.class)
-public class TeraPipeSystem extends BaseComponentSystem {
-
-
+@Share(value = PipeSystem.class)
+public class PipeSystem extends BaseComponentSystem {
     @In
     private Time time;
     @In
@@ -165,7 +163,7 @@ public class TeraPipeSystem extends BaseComponentSystem {
     public boolean insertIntoPipe(EntityRef actor, EntityRef pipe, Side side, Prefab prefab, float velocity) {
         if (actor.hasComponent(PipeFollowingComponent.class))
             return false;
-        if(actor.hasComponent(ItemComponent.class))
+        if(!actor.hasComponent(ItemComponent.class))
             return false;
 
         BlockComponent blockComponent = pipe.getComponent(BlockComponent.class);

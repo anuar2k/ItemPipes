@@ -38,7 +38,7 @@ import org.terasology.physics.shapes.SphereShapeComponent;
 import org.terasology.registry.In;
 import org.terasology.itempipes.components.SuctionCollisionManifold;
 import org.terasology.itempipes.components.SuctionComponent;
-import org.terasology.itempipes.controllers.TeraPipeSystem;
+import org.terasology.itempipes.controllers.PipeSystem;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.items.OnBlockItemPlaced;
 
@@ -58,7 +58,7 @@ public class SuctionAction  extends BaseComponentSystem {
     EntityManager entityManager;
 
     @In
-    TeraPipeSystem teraPipeSystem;
+    PipeSystem teraPipeSystem;
 
     @ReceiveEvent
     public void onSuctionPlaced(OnBlockItemPlaced event, EntityRef entityRef) {

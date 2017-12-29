@@ -24,12 +24,11 @@ import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.itempipes.components.PipeConnectionComponent;
 import org.terasology.itempipes.event.PipeInsertEvent;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.Direction;
-import org.terasology.math.Side;
-import org.terasology.math.geom.Quat4f;
+import org.terasology.math.Rotation;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.In;
+import org.terasology.segmentedpaths.blocks.PathFamily;
 import org.terasology.segmentedpaths.components.BlockMappingComponent;
 import org.terasology.segmentedpaths.components.PathFollowerComponent;
 import org.terasology.segmentedpaths.controllers.PathFollowerSystem;
@@ -40,6 +39,7 @@ import org.terasology.itempipes.components.PipeComponent;
 import org.terasology.itempipes.components.PipeFollowingComponent;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.block.BlockComponent;
+import org.terasology.world.block.family.BlockFamily;
 
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class BlockMotionSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
@@ -54,7 +54,7 @@ public class BlockMotionSystem extends BaseComponentSystem implements UpdateSubs
     @In
     SegmentCacheSystem segmentCacheSystem;
     @In
-    TeraPipeSystem teraPipeSystem;
+    PipeSystem pipeSystem;
 
     private PipeBlockSegmentMapper segmentMapping;
 
@@ -66,12 +66,12 @@ public class BlockMotionSystem extends BaseComponentSystem implements UpdateSubs
     public void update(float delta) {
         for(EntityRef entityRef: entityManager.getEntitiesWith(PipeFollowingComponent.class)) {
             PathFollowerComponent pathFollowingComponent = entityRef.getComponent(PathFollowerComponent.class);
-            EntityRef pipe =  pathFollowingComponent.segmentMeta.association;
-            if(!pipe.exists()) {
-                teraPipeSystem.dropItem(entityRef);
+            EntityRef blockEntity =  pathFollowingComponent.segmentMeta.association;
+            if(!blockEntity.exists()) {
+                pipeSystem.dropItem(entityRef);
                 return;
             }
-            PipeComponent pipeComponent = pipe.getComponent(PipeComponent.class);
+            PipeComponent pipeComponent = blockEntity.getComponent(PipeComponent.class);
             PipeFollowingComponent pipeFollowingComponent = entityRef.getComponent(PipeFollowingComponent.class);
             LocationComponent locationComponent =  entityRef.getComponent(LocationComponent.class);
 
@@ -83,21 +83,26 @@ public class BlockMotionSystem extends BaseComponentSystem implements UpdateSubs
                 Vector3f position = pathFollowerSystem.vehiclePoint(entityRef);
                 locationComponent.setWorldPosition(position);
             } else {
-                Quat4f rotation = segmentSystem.segmentRotation(pathFollowingComponent.segmentMeta);
+                BlockComponent blockComponent = blockEntity.getComponent(BlockComponent.class);
+                BlockFamily blockFamily = blockComponent.getBlock().getBlockFamily();
                 BlockMappingComponent blockMappingComponent = pathFollowingComponent.segmentMeta.prefab.getComponent(BlockMappingComponent.class);
-                BlockComponent blockComponent = pipe.getComponent(BlockComponent.class);
-                Vector3i blockPosition = new Vector3i(blockComponent.getPosition());
-                if(pathFollowingComponent.segmentMeta.sign == 1) {
-                    blockPosition.add(Side.inDirection(rotation.rotate(blockMappingComponent.s2.getVector3i().toVector3f())).getVector3i());
+                if (blockFamily instanceof PathFamily) {
+                    Rotation rotation = ((PathFamily) blockFamily).getRotationFor(blockComponent.getBlock().getURI());
+                    Vector3i position = new Vector3i(blockComponent.getPosition());
+                    if (pathFollowingComponent.segmentMeta.sign == 1) {
+                        position.add(rotation.rotate(blockMappingComponent.s2).getVector3i());
+                    } else {
+                        position.add(rotation.rotate(blockMappingComponent.s1).getVector3i());
+                    }
+                    EntityRef nextBlock = blockEntityRegistry.getBlockEntityAt(position);
+                    pipeSystem.dropItem(entityRef);
+                    if (nextBlock.hasComponent(PipeConnectionComponent.class)) {
+                        nextBlock.send(new PipeInsertEvent(entityRef, pathFollowingComponent.segmentMeta));
+                    }
                 } else {
-                    blockPosition.add(Side.inDirection(rotation.rotate(blockMappingComponent.s1.getVector3i().toVector3f())).getVector3i());
-                }
-                EntityRef blockEntity = blockEntityRegistry.getBlockEntityAt(blockPosition);
-                teraPipeSystem.dropItem(entityRef);
-                if(blockEntity.hasComponent(PipeConnectionComponent.class)) {
-                    blockEntity.send(new PipeInsertEvent(entityRef,pathFollowingComponent.segmentMeta));
-                }
+                    pipeSystem.dropItem(entityRef);
 
+                }
                 return;
             }
             entityRef.saveComponent(locationComponent);
