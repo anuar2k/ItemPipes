@@ -65,7 +65,6 @@ public class PipeBlockSegmentMapper implements SegmentMapping {
 
             Segment currentSegment = segmentCacheSystem.getSegment(meta.prefab);
 
-
             BlockMappingComponent blockMappingComponent = meta.prefab.getComponent(BlockMappingComponent.class);
             if (blockFamily instanceof PathFamily) {
 
@@ -88,7 +87,7 @@ public class PipeBlockSegmentMapper implements SegmentMapping {
                                 paths.add(d);
                             }
                         }
-                        PipeMappingEvent pipeMappingEvent = blockEntity.send(new PipeMappingEvent(paths));
+                        PipeMappingEvent pipeMappingEvent = blockEntity.send(new PipeMappingEvent(paths,meta,rotation));
                         return new MappingResult(pipeMappingEvent.getSelectedPath(), blockEntity);
 
                     }
@@ -109,7 +108,7 @@ public class PipeBlockSegmentMapper implements SegmentMapping {
                                 paths.add(d);
                             }
                         }
-                        PipeMappingEvent pipeMappingEvent = blockEntity.send(new PipeMappingEvent(paths));
+                        PipeMappingEvent pipeMappingEvent = blockEntity.send(new PipeMappingEvent(paths,meta,rotation));
                         return new MappingResult(pipeMappingEvent.getSelectedPath(), blockEntity);
                     }
                 }

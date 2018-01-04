@@ -15,8 +15,13 @@
  */
 package org.terasology.itempipes.event;
 
+import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.AbstractConsumableEvent;
 import org.terasology.entitySystem.prefab.Prefab;
+import org.terasology.math.Rotation;
+import org.terasology.math.Side;
+import org.terasology.segmentedpaths.SegmentMeta;
+import org.terasology.segmentedpaths.components.BlockMappingComponent;
 
 import java.util.List;
 
@@ -24,18 +29,29 @@ public class PipeMappingEvent extends AbstractConsumableEvent {
 
     private List<Prefab> paths;
     private Prefab selectedPath;
+    private SegmentMeta segmentMeta;
+    private Rotation rotation;
 
-    public PipeMappingEvent(List<Prefab> paths) {
+    public PipeMappingEvent(List<Prefab> paths, SegmentMeta meta, Rotation rotation) {
         this.paths = paths;
         this.selectedPath = paths.get(0);
+        this.segmentMeta = meta;
+        this.rotation = rotation;
     }
 
     public List<Prefab> getPaths() {
         return paths;
     }
 
-    public void setSelectedPath(Prefab path)
-    {
+    public EntityRef getPathFollowingEntity() {
+        return segmentMeta.association;
+    }
+
+    public Rotation getRotation() {
+        return rotation;
+    }
+
+    public void setSelectedPath(Prefab path) {
         this.selectedPath = path;
     }
 
