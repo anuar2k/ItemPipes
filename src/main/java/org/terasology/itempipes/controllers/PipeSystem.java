@@ -154,7 +154,6 @@ public class PipeSystem extends BaseComponentSystem {
         actor.addComponent(lifespanComponent);
         actor.addComponent(pickupComponent);
 
-
         actor.removeComponent(PipeFollowingComponent.class);
         actor.removeComponent(PathFollowerComponent.class);
     }

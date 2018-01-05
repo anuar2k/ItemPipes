@@ -15,9 +15,10 @@
  */
 package org.terasology.itempipes.blocks;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
+import org.terasology.itempipes.event.PipeMappingEvent;
 import org.terasology.math.Rotation;
 import org.terasology.math.Side;
 import org.terasology.math.geom.Quat4f;
@@ -32,12 +33,11 @@ import org.terasology.segmentedpaths.controllers.SegmentCacheSystem;
 import org.terasology.segmentedpaths.controllers.SegmentMapping;
 import org.terasology.segmentedpaths.controllers.SegmentSystem;
 import org.terasology.segmentedpaths.segments.Segment;
-import org.terasology.itempipes.event.PipeMappingEvent;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.family.BlockFamily;
 
-import java.util.List;
+import java.util.Map;
 
 public class PipeBlockSegmentMapper implements SegmentMapping {
     private PathFollowerSystem pathFollowerSystem;
@@ -80,15 +80,25 @@ public class PipeBlockSegmentMapper implements SegmentMapping {
                         Vector3f v2 = segmentSystem.segmentPosition(blockEntity);
                         Quat4f q2 = segmentSystem.segmentRotation(blockEntity);
 
-                        List<Prefab> paths = Lists.newArrayList();
+                        Map<Side, Prefab> paths = Maps.newHashMap();
                         for (Prefab d : pathDescriptor.descriptors) {
                             Segment nextSegment = segmentCacheSystem.getSegment(d);
-                            if (segmentSystem.segmentMatch(currentSegment, v1, q1, nextSegment, v2, q2) != SegmentSystem.JointMatch.None) {
-                                paths.add(d);
+                            BlockMappingComponent nextBlockMapping = d.getComponent(BlockMappingComponent.class);
+                            switch (segmentSystem.segmentMatch(currentSegment, v1, q1, nextSegment, v2, q2)) {
+                                case Start_End:
+                                    paths.put(Side.inDirection(q2.rotate(nextBlockMapping.s1.getVector3i().toVector3f())), d);
+                                    break;
+                                case Start_Start:
+                                    paths.put(Side.inDirection(q2.rotate(nextBlockMapping.s2.getVector3i().toVector3f())), d);
+                                    break;
                             }
                         }
-                        PipeMappingEvent pipeMappingEvent = blockEntity.send(new PipeMappingEvent(paths,meta,rotation));
-                        return new MappingResult(pipeMappingEvent.getSelectedPath(), blockEntity);
+                        PipeMappingEvent pipeMappingEvent = blockEntity.send(new PipeMappingEvent(paths.keySet()));
+                        Prefab prefab = paths.get(pipeMappingEvent.getOutputSide());
+                        if (prefab == null)
+                            return null;
+
+                        return new MappingResult(prefab, blockEntity);
 
                     }
                     case END: {
@@ -101,25 +111,30 @@ public class PipeBlockSegmentMapper implements SegmentMapping {
                         Vector3f v2 = segmentSystem.segmentPosition(blockEntity);
                         Quat4f q2 = segmentSystem.segmentRotation(blockEntity);
 
-                        List<Prefab> paths = Lists.newArrayList();
+                        Map<Side, Prefab> paths = Maps.newHashMap();
                         for (Prefab d : pathDescriptor.descriptors) {
                             Segment nextSegment = segmentCacheSystem.getSegment(d);
-                            if (segmentSystem.segmentMatch(currentSegment, v1, q1, nextSegment, v2, q2) != SegmentSystem.JointMatch.None) {
-                                paths.add(d);
+                            BlockMappingComponent nextBlockMapping = d.getComponent(BlockMappingComponent.class);
+                            switch (segmentSystem.segmentMatch(currentSegment, v1, q1, nextSegment, v2, q2)) {
+                                case End_End:
+                                    paths.put(Side.inDirection(q2.rotate(nextBlockMapping.s1.getVector3i().toVector3f())), d);
+                                    break;
+                                case End_Start:
+                                    paths.put(Side.inDirection(q2.rotate(nextBlockMapping.s2.getVector3i().toVector3f())), d);
+                                    break;
                             }
                         }
-                        PipeMappingEvent pipeMappingEvent = blockEntity.send(new PipeMappingEvent(paths,meta,rotation));
-                        return new MappingResult(pipeMappingEvent.getSelectedPath(), blockEntity);
+                        PipeMappingEvent pipeMappingEvent = blockEntity.send(new PipeMappingEvent(paths.keySet()));
+                        Prefab prefab = paths.get(pipeMappingEvent.getOutputSide());
+                        if (prefab == null)
+                            return null;
+
+                        return new MappingResult(prefab, blockEntity);
                     }
                 }
             }
         }
 
         return null;
-    }
-
-    private Vector3i findOffset(Vector3i loc, Side main, Side influence, Rotation r) {
-        Vector3i current = new Vector3i(loc).add(r.rotate(main).getVector3i());
-        return current;
     }
 }
