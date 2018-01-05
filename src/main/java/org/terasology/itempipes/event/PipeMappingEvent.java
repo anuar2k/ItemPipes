@@ -22,40 +22,33 @@ import org.terasology.math.Rotation;
 import org.terasology.math.Side;
 import org.terasology.segmentedpaths.SegmentMeta;
 import org.terasology.segmentedpaths.components.BlockMappingComponent;
+import org.terasology.world.block.Block;
 
 import java.util.List;
+import java.util.Set;
 
 public class PipeMappingEvent extends AbstractConsumableEvent {
+    private Set<Side> outputSides;
+    private Side outputSide;
 
-    private List<Prefab> paths;
-    private Prefab selectedPath;
-    private SegmentMeta segmentMeta;
-    private Rotation rotation;
+    public PipeMappingEvent(Set<Side> sides) {
+        this.outputSides = sides;
+        for (Side side : sides) {
+            this.outputSide = side;
+            break;
+        }
 
-    public PipeMappingEvent(List<Prefab> paths, SegmentMeta meta, Rotation rotation) {
-        this.paths = paths;
-        this.selectedPath = paths.get(0);
-        this.segmentMeta = meta;
-        this.rotation = rotation;
     }
 
-    public List<Prefab> getPaths() {
-        return paths;
+    public Set<Side> getOutputSides() {
+        return outputSides;
     }
 
-    public EntityRef getPathFollowingEntity() {
-        return segmentMeta.association;
+    public Side getOutputSide() {
+        return outputSide;
     }
 
-    public Rotation getRotation() {
-        return rotation;
-    }
-
-    public void setSelectedPath(Prefab path) {
-        this.selectedPath = path;
-    }
-
-    public Prefab getSelectedPath() {
-        return selectedPath;
+    public void setOutputSide(Side outputSide) {
+        this.outputSide = outputSide;
     }
 }
