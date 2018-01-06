@@ -1,9 +1,9 @@
 # ItemPipes
-**ItemPipes** is a Terasology module that adds item transport system based on pipelines. ItemPipes are useful for automation purposes - this module lets transport items without the involvement from the player.
+**ItemPipes** is a Terasology module that adds item transport system based on pipelines. ItemPipes are useful for automation purposes - this module lets you transport items without your involvement.
 
 ## Items
   - **Pipes** are the base of this module. They are used to transport items. You can connect them together with other pipes to make pipelines and with blocks such as Suction Blocks or chests.
-  - **Suction Block** is used to input items into pipes. Suction Block attracts all items laying on the ground withing 5 blocks long radius to suck them in. If more than one pipe is connected to a Suction Block, it will put the items randomly into one of the connected pipes.
+  - **Suction Block** is used to input items into pipes. Suction Block attracts all items laying on the ground within 5 block radius to suck them in. If more than one pipe is connected to a Suction Block, it will put the items randomly into one of the connected pipes.
   
 _Check out **[AdditionalItemPipes](https://github.com/Terasology/AdditionalItemPipes)** for more interesting items using pipe system!_
 
